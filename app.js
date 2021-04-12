@@ -66,7 +66,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 클라이언트에서도 user 객체를 사용하고 싶다.
+
 app.use((req, res, next)=>{
     res.locals.user = req.user || null;
     next();
