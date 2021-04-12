@@ -1,24 +1,43 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 const port = process.env.PORT || 5000;
+
+// 환경변수 설정
+if (process.env.NODE_ENV === "production") {
+    dotenv.config({path: path.join(__dirname, "/.env.production")});
+    app.use(morgan("combined"));
+} else {
+    dotenv.config({path: path.join(__dirname, "/.env.develop")});
+    app.use(morgan("dev"));
+}
+
 const _handlebars = require("handlebars");
 const exhbrs = require("express-handlebars");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const flash = require("connect-flash");
 const {allowInsecurePrototypeAccess} = require("@handlebars/allow-prototype-access");
-const path = require("path");
+const keys = require("./config/keys");
+const methodOverride = require("method-override");
 
+const {sequelize} = require("./models");
+
+const passport = require("passport");
+require("./passport")();
+
+// routers
 const pageRouter = require("./routers/pageRouter");
+const authRouter = require("./routers/auth");
+const dashboardRouter = require("./routers/dashboard");
 
-
-dotenv.config();
-
+// view template
 const hbs = exhbrs.create({
-    handlebars : allowInsecurePrototypeAccess(_handlebars)
+    handlebars: allowInsecurePrototypeAccess(_handlebars)
 });
-
 app.set("view engine", "handlebars");
 app.engine("handlebars", hbs.engine);
 app.use(express.static(path.join(__dirname, "/public")));
@@ -27,30 +46,50 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
+app.use(methodOverride("_method"));
+app.use(flash());
+
 
 // session
-
 app.use(session({
     resave: false,
     saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
+    secret: keys.COOKIE_SECRET,
     cookie: {
-        maxAge: 60*60*60*24,
+        maxAge: 60 * 60 * 60 * 24,
         httpOnly: true,
-        secure:false
+        secure: false
     }
 }))
 
+// passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// 클라이언트에서도 user 객체를 사용하고 싶다.
+app.use((req, res, next)=>{
+    res.locals.user = req.user || null;
+    next();
+})
+
+// db
+sequelize.sync({force: false})
+    .then(() => {
+        console.log("db is successfully cnnected")
+    }).catch(err => console.log(err));
 
 app.use("/", pageRouter);
+app.use("/auth",authRouter);
+app.use("/dashboard", dashboardRouter);
 
 
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
     let error = new Error(`${req.method}${req.url} no exists`);
     error.status = 404;
     next(error);
 });
 
+// error middleware
 app.use((err, req, res, next) => {
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
@@ -58,6 +97,6 @@ app.use((err, req, res, next) => {
     res.render("pages/errors");
 })
 
-const server = app.listen(port, ()=>{
+const server = app.listen(port, () => {
     console.log(`server is running on port: ${port}`);
 })

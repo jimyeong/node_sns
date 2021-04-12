@@ -1,0 +1,36 @@
+.container__inner {
+  margin-top: 30px;
+}
+.container__inner.main {
+  display: flex;
+  justify-content: space-evenly;
+}
+.container__inner.dashboard {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.login__outer {
+  width: 40%;
+}
+
+.search-bar {
+  width: 30%;
+}
+.search-bar .form-control {
+  display: inline-block;
+  width: 80%;
+}
+
+.join-form {
+  width: 40%;
+}
+
+.dashboard.card {
+  width: 60%;
+}
+.dashboard .text-ctrl {
+  width: 100%;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -1,1 +1,28 @@
-<h3>main page</h3>
+<div class="container__inner main">
+    <form action="/auth/login" class="login login__outer" method="post">
+        <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+        <div class="form-floating">
+            <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <a class="w-100 btn btn-lg btn-warning mt-3" href="/auth/kakao">Kakao Login</a>
+        <a class="w-100 btn btn-lg btn-secondary mt-3" href="/join">Sign up</a>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    </form>
+    <form class="search-bar">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>

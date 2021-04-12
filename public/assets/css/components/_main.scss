@@ -1,0 +1,27 @@
+.container__inner{
+
+}
+.login__outer{
+  width: 40%;
+}
+.search-bar{
+  width: 30%;
+  .form-control{
+    display: inline-block;
+    width: 80%;
+  }
+}
+.join-form{
+  width: 40%;
+}
+
+
+// post
+.dashboard{
+  &.card{
+    width: 60%;
+  }
+  .text-ctrl{
+    width: 100%;
+  }
+}

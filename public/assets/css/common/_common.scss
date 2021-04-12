@@ -1,0 +1,14 @@
+.container__inner{
+  margin-top: 30px;
+  &.main{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  &.dashboard{
+    display: flex;
+    justify-content: space-evenly;
+  }
+}
+.container__center{
+
+}
