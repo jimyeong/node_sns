@@ -35,8 +35,11 @@ const authRouter = require("./routers/auth");
 const dashboardRouter = require("./routers/dashboard");
 
 // view template
+const {stringify} = require("./helper/hbs");
 const hbs = exhbrs.create({
-    handlebars: allowInsecurePrototypeAccess(_handlebars)
+    handlebars: allowInsecurePrototypeAccess(_handlebars),
+    helpers:{stringify: stringify}
+
 });
 app.set("view engine", "handlebars");
 app.engine("handlebars", hbs.engine);
@@ -69,11 +72,12 @@ app.use(passport.session());
 
 app.use((req, res, next)=>{
     res.locals.user = req.user || null;
+    res.locals.helper =
     next();
 })
 
 // db
-sequelize.sync({force: false})
+sequelize.sync({force: true})
     .then(() => {
         console.log("db is successfully cnnected")
     }).catch(err => console.log(err));
@@ -87,6 +91,7 @@ app.use((req, res, next) => {
     let error = new Error(`${req.method}${req.url} no exists`);
     error.status = 404;
     next(error);
+
 });
 
 // error middleware

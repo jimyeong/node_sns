@@ -7,8 +7,22 @@
   &.dashboard{
     display: flex;
     justify-content: space-evenly;
+    .form-check{
+      text-align: left;
+    }
   }
 }
 .container__center{
 
+}
+
+//flex__container
+.flex__container{
+  display: flex;
+  &.space-between{
+    justify-content: space-between;
+  }
+  &.row{
+    flex-direction: row;
+  }
 }

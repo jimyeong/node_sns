@@ -72,7 +72,7 @@ router.get("/callback", passport.authenticate('kakao', {
 router.get("/logout", isLoggedIn, (req, res)=>{
     req.logout();
     req.session.destroy();
-    req.redirect("/");
+    res.redirect("/");
 })
 
 module.exports = router;

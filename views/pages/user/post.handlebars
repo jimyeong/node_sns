@@ -1,0 +1,52 @@
+<div class="container__inner dashboard">
+
+    <div class="card text-center">
+        <div class="card-header">
+            Hi, {{user.nick}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    <div class="card text-center dashboard">
+        <form action="/dashboard/post" method="post">
+            <div class="card-header">
+                Jot down your post
+            </div>
+            <div class="card-body">
+
+                <div class="row g-2 pb-3">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="content-title" required>
+                            <label for="content-title">Title</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <select class="form-select" id="content-status">
+                                <option selected value="1">Public</option>
+                                <option value="2">Private</option>
+                            </select>
+                            <label for="content-status">Status</label>
+                        </div>
+                    </div>
+                </div>
+
+                <textarea class="text-ctrl" name="content-area" id="content-area" rows="10"></textarea>
+
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Allow comments
+                    </label>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <button class="btn btn-success" id="post">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

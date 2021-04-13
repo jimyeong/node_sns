@@ -1,9 +1,9 @@
 exports.isLoggedIn = (req, res, next)=>{
-    if(req.isAuthenticated){
+    if(req.isAuthenticated()){
         next();
     }else{
-        res.status(403)
-            .send("login is needed");
+        req.flash("info", "you have to login");
+        res.redirect("/");
     }
 }
 exports.isNotLoggedIn = (req, res, next)=>{

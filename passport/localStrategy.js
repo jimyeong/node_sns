@@ -10,7 +10,6 @@ module.exports = () => {
 
         }, async (email, password, done) => {
             try {
-                console.log("@@@@@@@@@@@@@@@@" + email, " +  ", password);
                 const exUser = await User.findOne({
                     where: {email}
                 })

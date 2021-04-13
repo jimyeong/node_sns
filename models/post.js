@@ -12,6 +12,14 @@ module.exports = class Post extends Sequelize.Model {
                 type: Sequelize.STRING(200),
                 allowNull: true
             },
+            status: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false
+            },
+            commentAllow:{
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+            },
             created_at: {
                 type: Sequelize.DATE,
                 allowNull: false,

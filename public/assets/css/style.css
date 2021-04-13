@@ -9,6 +9,27 @@
   display: flex;
   justify-content: space-evenly;
 }
+.container__inner.dashboard .form-check {
+  text-align: left;
+}
+
+.flex__container {
+  display: flex;
+}
+.flex__container.space-between {
+  justify-content: space-between;
+}
+.flex__container.row {
+  flex-direction: row;
+}
+
+.sidebar__wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
 
 .login__outer {
   width: 40%;
