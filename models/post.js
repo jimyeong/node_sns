@@ -5,7 +5,7 @@ module.exports = class Post extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
             content: {
-                type: Sequelize.STRING(140),
+                type: Sequelize.STRING(400),
                 allowNull: false
             },
             img: {
@@ -20,11 +20,6 @@ module.exports = class Post extends Sequelize.Model {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
             },
-            created_at: {
-                type: Sequelize.DATE,
-                allowNull: false,
-                defaultValue: Sequelize.NOW
-            }
         }, {
             sequelize,
             timestamps: true,
@@ -38,7 +33,7 @@ module.exports = class Post extends Sequelize.Model {
     }
 
     static associate(db) {
-        db.Post.belongsTo(db.User);
-        db.Post.belongsToMany(db.HashTag, {foreignKey: Strings.fk_post_id, through: "PostHashtag"});
+        db.Post.belongsTo(db.User, {foreignKey: Strings.fk_user_post_id});
+        db.Post.belongsToMany(db.HashTag, {foreignKey: Strings.fk_post_id , through: "PostHashtag"});
     }
 }

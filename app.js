@@ -4,6 +4,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const port = process.env.PORT || 5000;
+const logger = require('./helper/logger');
 
 // 환경변수 설정
 if (process.env.NODE_ENV === "production") {
@@ -19,6 +20,8 @@ const exhbrs = require("express-handlebars");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+
+
 const flash = require("connect-flash");
 const {allowInsecurePrototypeAccess} = require("@handlebars/allow-prototype-access");
 const keys = require("./config/keys");
@@ -72,20 +75,19 @@ app.use(passport.session());
 
 app.use((req, res, next)=>{
     res.locals.user = req.user || null;
-    res.locals.helper =
+    res.locals.helper = stringify
     next();
 })
 
 // db
-sequelize.sync({force: true})
+sequelize.sync({force: false})
     .then(() => {
-        console.log("db is successfully cnnected")
+        console.log("db is successfully connect")
     }).catch(err => console.log(err));
 
 app.use("/", pageRouter);
 app.use("/auth",authRouter);
 app.use("/dashboard", dashboardRouter);
-
 
 app.use((req, res, next) => {
     let error = new Error(`${req.method}${req.url} no exists`);
@@ -96,9 +98,15 @@ app.use((req, res, next) => {
 
 // error middleware
 app.use((err, req, res, next) => {
+
+
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
     res.status(err.status || 500);
+
+    // log
+    logger.info(`${err.method} ${err.message}`);
+    logger.error(`${err.method} ${err.message}`);
     res.render("pages/errors");
 })
 

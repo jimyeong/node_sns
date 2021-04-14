@@ -1,5 +1,11 @@
-<div class="container__inner dashboard">
 
+<h3 class="mt-3">
+    Post your thoughts
+</h3>
+<p class="fw-lighter fs-4 text ftc-bold">It's totally anonymous, <br>
+    so you can be a bit more honest and show yourself</p>
+
+<div class="container__inner dashboard">
     <div class="card text-center">
         <div class="card-header">
             Hi, {{user.nick}}
@@ -20,13 +26,13 @@
                 <div class="row g-2 pb-3">
                     <div class="col-md">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="content-title" required>
+                            <input type="text" class="form-control" name="title" id="content-title" required>
                             <label for="content-title">Title</label>
                         </div>
                     </div>
                     <div class="col-md">
                         <div class="form-floating">
-                            <select class="form-select" id="content-status">
+                            <select class="form-select" id="content-status" name="status">
                                 <option selected value="1">Public</option>
                                 <option value="2">Private</option>
                             </select>
@@ -35,10 +41,10 @@
                     </div>
                 </div>
 
-                <textarea class="text-ctrl" name="content-area" id="content-area" rows="10"></textarea>
+                <textarea class="text-ctrl" name="content" id="content-area" rows="10"></textarea>
 
                 <div class="form-check mt-3">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <input class="form-check-input" name="allowComment" type="checkbox" id="flexCheckChecked" checked>
                     <label class="form-check-label" for="flexCheckChecked">
                         Allow comments
                     </label>
@@ -46,6 +52,7 @@
             </div>
             <div class="card-footer text-muted">
                 <button class="btn btn-success" id="post">Save</button>
+                <input type="hidden" value="{{csrfToken}}" name="_csrf">
             </div>
         </form>
     </div>

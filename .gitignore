@@ -7,3 +7,5 @@ config
 README.md
 .gitignore
 
+error.log
+combined.log
