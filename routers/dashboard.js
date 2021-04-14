@@ -2,17 +2,25 @@ const router = require("express").Router();
 const {isLoggedIn} = require("./middlewares");
 const Post = require("../models/post");
 const sanitizeHtml = require("sanitize-html");
-
+const Strings = require("../helper/Strings");
 
 // csrf 공격 방어
 const csrf = require("csurf");
 const csrfProtection = csrf({cookie: true});
 
 
-router.get("/", isLoggedIn, (req, res) => {
-    console.log(req.user);
+router.get("/", isLoggedIn, async (req, res, next) => {
 
-    res.render("pages/dashboard", {info: req.flash('info')});
+    try {
+        const result = await Post.findAll({where: {[Strings.fk_user_post_id]: req.user.id}});
+        res.render("pages/dashboard", {
+            info: req.flash('info'),
+            posts: result
+        });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
 })
 
 
@@ -31,6 +39,7 @@ router.post("/post", isLoggedIn, csrfProtection, async (req, res, next) => {
 
     const commentAllow = req.body.allowComment === 'on' ? '1' : '0';
     const newPost = {
+        title: req.body.title,
         content: content,
         img: req.body.thumbnail,
         status: req.body.status,
@@ -40,11 +49,11 @@ router.post("/post", isLoggedIn, csrfProtection, async (req, res, next) => {
 
     try {
         const result = await Post.create(newPost);
-        if(result){
+        if (result) {
             req.flash("info", "posting is successfully done");
             res.redirect("/dashboard");
         }
-    }catch (err){
+    } catch (err) {
         console.error(err);
         next(err);
     }

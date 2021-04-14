@@ -4,6 +4,10 @@ const Strings = require("../helper/Strings");
 module.exports = class Post extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
+            title: {
+                type: Sequelize.STRING(100),
+                allowNull: false
+            },
             content: {
                 type: Sequelize.STRING(400),
                 allowNull: false

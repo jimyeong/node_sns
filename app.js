@@ -38,10 +38,10 @@ const authRouter = require("./routers/auth");
 const dashboardRouter = require("./routers/dashboard");
 
 // view template
-const {stringify} = require("./helper/hbs");
+const {stringify, formatDate} = require("./helper/hbs");
 const hbs = exhbrs.create({
     handlebars: allowInsecurePrototypeAccess(_handlebars),
-    helpers:{stringify: stringify}
+    helpers:{stringify, formatDate}
 
 });
 app.set("view engine", "handlebars");
@@ -54,7 +54,6 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 app.use(methodOverride("_method"));
 app.use(flash());
-
 
 // session
 app.use(session({
@@ -71,15 +70,13 @@ app.use(session({
 // passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 app.use((req, res, next)=>{
     res.locals.user = req.user || null;
-    res.locals.helper = stringify
+    // res.locals.helper = stringify
     next();
-})
+});
 
-// db
+// db connection
 sequelize.sync({force: false})
     .then(() => {
         console.log("db is successfully connect")
@@ -92,21 +89,19 @@ app.use("/dashboard", dashboardRouter);
 app.use((req, res, next) => {
     let error = new Error(`${req.method}${req.url} no exists`);
     error.status = 404;
-    next(error);
-
-});
-
-// error middleware
-app.use((err, req, res, next) => {
-
-
-    res.locals.message = err.message;
-    res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
-    res.status(err.status || 500);
 
     // log
     logger.info(`${err.method} ${err.message}`);
     logger.error(`${err.method} ${err.message}`);
+    next(error);
+});
+
+// error middleware
+app.use((err, req, res, next) => {
+    res.locals.message = err.message;
+    res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
+    res.status(err.status || 500);
+
     res.render("pages/errors");
 })
 

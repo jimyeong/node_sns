@@ -1,19 +1,40 @@
-<div class="conatainer__inner post pt-3">
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="..." alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+<h3 class="mt-3">
+    Welcome {{user.nick}}
+</h3>
+<p class="fw-lighter fs-4 text ftc-bold">This is your journals </p>
+<div class="conatainer__inner post pt-3" id="masonry-container">
+    {{#if posts}}
+        {{#each posts}}
+            <div class="card mb-3">
+                <div class="card__wrapper" href="#">
+                    <div href="#" class="card__menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                        <div class="card dropdown" style="width: 18rem;">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a class="btn btn-success" href="/dashboard/edit/{{id}}?method=edit">edit</a></li>
+                                <li class="list-group-item"><a class="btn btn-danger" href="/dashboard/delete/{{id}}?method=delete">delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="..." alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{this.title}}</h5>
+                                <div class="card-text">{{{this.content}}}</div>
+                                <p class="card-text"><small class="text-muted"></small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <small>Posted: {{formatDate this.updatedAt 'MMMM Do YYYY'}}</small>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            2021-04-05
-        </div>
-    </div>
+        {{/each}}
+    {{else}}
+        <p>there is no posts you have uploaded</p>
+    {{/if}}
 </div>
