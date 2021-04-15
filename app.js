@@ -27,6 +27,7 @@ const {allowInsecurePrototypeAccess} = require("@handlebars/allow-prototype-acce
 const keys = require("./config/keys");
 const methodOverride = require("method-override");
 
+//db
 const {sequelize} = require("./models");
 
 const passport = require("passport");
@@ -72,7 +73,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next)=>{
     res.locals.user = req.user || null;
-    // res.locals.helper = stringify
     next();
 });
 
